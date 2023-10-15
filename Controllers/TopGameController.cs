@@ -37,4 +37,22 @@ public class TopGameController : ControllerBase
 
         return CreatedAtAction(nameof(GetTopGame), new { id = topGame.Id }, topGame);
     }
+    
+    [HttpPut("{gameId}")]
+    public IActionResult UpdateTopGame(int gameId, [FromBody] TopGame topGame)
+    {
+        if (topGame == null || gameId != topGame.GameId)
+        {
+            return BadRequest("Invalid data");
+        }
+
+        var updatedGame = _topGameService.UpdateTopGame(gameId, topGame);
+
+        if (updatedGame == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(updatedGame);
+    }
 }
