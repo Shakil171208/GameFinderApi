@@ -27,7 +27,7 @@ public class TopGameController : ControllerBase
 
     [HttpPost]
     public IActionResult AddTopGame([FromBody] TopGame topGame)
-     {
+    {
         if (topGame == null)
         {
             return BadRequest("Invalid data");
@@ -37,7 +37,7 @@ public class TopGameController : ControllerBase
 
         return CreatedAtAction(nameof(GetTopGame), new { id = topGame.Id }, topGame);
     }
-    
+
     [HttpPut("{gameId}")]
     public IActionResult UpdateTopGame(int gameId, [FromBody] TopGame topGame)
     {
@@ -54,5 +54,20 @@ public class TopGameController : ControllerBase
         }
 
         return Ok(updatedGame);
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteTopGame(int id)
+    {
+        var existingGame = _topGameService.GetTopGame().FirstOrDefault(g => g.Id == id);
+
+        if (existingGame == null)
+        {
+            return NotFound();
+        }
+
+        _topGameService.DeleteTopGame(id);
+
+        return NoContent();
     }
 }

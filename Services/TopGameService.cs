@@ -10,11 +10,11 @@ public class TopGameService : ITopGameService
         _context = context;
     }
 
-    public List<TopGame>  GetTopGame()
-    { 
-         var result = _context.TopGames.ToList();
-         
-         return result;
+    public List<TopGame> GetTopGame()
+    {
+        var result = _context.TopGames.ToList();
+
+        return result;
     }
 
     public void AddTopGame(TopGame topGame)
@@ -23,7 +23,7 @@ public class TopGameService : ITopGameService
         _context.SaveChanges();
     }
 
-   public TopGame UpdateTopGame(int gameId, TopGame topGame)
+    public TopGame UpdateTopGame(int gameId, TopGame topGame)
     {
         var existingGame = _context.TopGames.FirstOrDefault(g => g.GameId == gameId);
 
@@ -44,4 +44,13 @@ public class TopGameService : ITopGameService
         return existingGame;
     }
 
+    public void DeleteTopGame(int id)
+    {
+        var game = _context.TopGames.FirstOrDefault(g => g.Id == id);
+        if (game != null)
+        {
+            _context.TopGames.Remove(game);
+            _context.SaveChanges();
+        }
+    }
 }
